@@ -243,6 +243,7 @@ def get_directory_size():
 
 
 def print_storage_size_for_whole_installed_python_modules():
+    total_storage_size = 0
     print("\nInstalled Python Modules:\n")
     for distribution in sorted(distributions(), key=lambda d: d.metadata["Name"].lower()):
         storage_size = sum(
@@ -251,6 +252,16 @@ def print_storage_size_for_whole_installed_python_modules():
             if (path := Path(distribution.locate_file(file))).is_file()
         )
         print(f"{distribution.metadata['Name']:<25} {convert_bytes_to_mebibytes(storage_size):7.2f} MB")
+        total_storage_size += storage_size
+    print(f"\n{'Total Storage Size:':<25} {convert_bytes_to_mebibytes(total_storage_size):7.2f} MB")
+
+    return total_storage_size
+
+
+def print_built_in_python_modules():
+    print("\nBuilt-in Python Modules:\n")
+    for module in sys.builtin_module_names:
+        print(module)
 
 
 def convert_xlsx_to_csv():
@@ -357,6 +368,7 @@ functions = {
     "41": python_info,
     "42": get_directory_size,
     "43": print_storage_size_for_whole_installed_python_modules,
+    "44": print_built_in_python_modules,
     "50": convert_xlsx_to_csv,
     "51": convert_csv_to_xlsx,
     "52": read_data_from_a_csv_file,
